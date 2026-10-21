@@ -55,9 +55,9 @@
           <div class="app-icon" aria-hidden="true">أب</div>
           <div><h2>تطبيق الأب</h2><span class="en">MOREX Father</span></div>
         </div>
-        <div class="meta"><span class="version" id="father-version">جارٍ تحميل الإصدار…</span><span class="stable" id="father-updated"></span></div>
+        <div class="meta"><span class="version" id="father-version">الإصدار 1.0.4</span><span class="stable" id="father-updated"></span></div>
         <p class="desc">لإدارة الأجهزة المرتبطة، ومراجعة الاستخدام، وإعدادات العائلة من لوحة الوالد.</p>
-        <a class="download" id="father-download" href="#" aria-disabled="true">⬇ تحميل تطبيق الأب</a>
+        <a class="download" id="father-download" href="https://github.com/morex-admin-2027/morex-downloads/releases/download/father-v1.0.4/MOREX-Father-1.0.4.apk" target="_blank" rel="noopener noreferrer">⬇ تحميل تطبيق الأب</a>
       </article>
 
       <article class="card child">
@@ -65,9 +65,9 @@
           <div class="app-icon" aria-hidden="true">طفل</div>
           <div><h2>تطبيق الطفل</h2><span class="en">MOREX Child</span></div>
         </div>
-        <div class="meta"><span class="version" id="child-version">جارٍ تحميل الإصدار…</span><span class="stable" id="child-updated"></span></div>
+        <div class="meta"><span class="version" id="child-version">الإصدار 1.0.4</span><span class="stable" id="child-updated"></span></div>
         <p class="desc">التطبيق المرافق على جهاز الطفل، مع إشعار واضح عند تفعيل الميزات المصرح بها.</p>
-        <a class="download" id="child-download" href="#" aria-disabled="true">⬇ تحميل تطبيق الطفل</a>
+        <a class="download" id="child-download" href="https://github.com/morex-admin-2027/morex-downloads/releases/download/child-v1.0.4/MOREX-Child-1.0.4.apk" target="_blank" rel="noopener noreferrer">⬇ تحميل تطبيق الطفل</a>
       </article>
     </section>
 
@@ -77,14 +77,25 @@
     <footer>
       <div>MOREX · صفحة التنزيل الرسمية</div>
       <div>يتم جلب الإصدارات من ملف التحديث المنشور في المستودع العام.</div>
-      <div><a href="https://github.com/morex-admin-2027/morex-downloads">مستودع التنزيلات</a> · <a href="./update.json">ملف التحديثات</a></div>
+      <div><a href="https://github.com/morex-admin-2027/morex-downloads">مستودع التنزيلات</a> · <a href="https://raw.githubusercontent.com/morex-admin-2027/morex-downloads/main/update.json">ملف التحديثات</a></div>
     </footer>
   </main>
 
   <script>
     (() => {
-      const manifestUrl = new URL("./update.json", window.location.href);
-      manifestUrl.searchParams.set("ts", String(Date.now()));
+      // المصدر المطلق يتجنب اختلاف المسارات عند النشر تحت GitHub Pages.
+      const MANIFEST_URL = "https://raw.githubusercontent.com/morex-admin-2027/morex-downloads/main/update.json";
+      const FALLBACK = {
+        father: {
+          version: "1.0.4",
+          apk_url: "https://github.com/morex-admin-2027/morex-downloads/releases/download/father-v1.0.4/MOREX-Father-1.0.4.apk"
+        },
+        child: {
+          version: "1.0.4",
+          apk_url: "https://github.com/morex-admin-2027/morex-downloads/releases/download/child-v1.0.4/MOREX-Child-1.0.4.apk"
+        }
+      };
+
       const validDownload = (value) => {
         if (typeof value !== "string") return false;
         try {
@@ -94,47 +105,58 @@
             u.pathname.startsWith("/morex-admin-2027/morex-downloads/releases/download/");
         } catch (_) { return false; }
       };
+
       const showApp = (key, record) => {
+        const fallback = FALLBACK[key];
         const versionEl = document.getElementById(key + "-version");
         const updatedEl = document.getElementById(key + "-updated");
         const link = document.getElementById(key + "-download");
-        const version = record && typeof record.version === "string" ? record.version : "غير متاح";
+        const safeRecord = record && typeof record === "object" ? record : {};
+        const version = typeof safeRecord.version === "string" && safeRecord.version.trim()
+          ? safeRecord.version : fallback.version;
+        const apkUrl = validDownload(safeRecord.apk_url) ? safeRecord.apk_url : fallback.apk_url;
+
         versionEl.textContent = "الإصدار " + version;
-        if (record && typeof record.updated_at === "string") {
-          const dt = new Date(record.updated_at);
-          updatedEl.textContent = Number.isNaN(dt.getTime()) ? "" : "تحديث " + dt.toLocaleDateString("ar");
+        updatedEl.textContent = "";
+        if (typeof safeRecord.updated_at === "string") {
+          const dt = new Date(safeRecord.updated_at);
+          if (!Number.isNaN(dt.getTime())) updatedEl.textContent = "تحديث " + dt.toLocaleDateString("ar");
         }
-        if (record && validDownload(record.apk_url)) {
-          link.href = record.apk_url;
-          link.removeAttribute("aria-disabled");
-          link.setAttribute("target", "_blank");
-          link.setAttribute("rel", "noopener noreferrer");
-        } else {
-          link.href = "#";
-          link.setAttribute("aria-disabled", "true");
-          link.removeAttribute("target");
-          link.removeAttribute("rel");
-        }
+
+        // يبقى الزر فعالاً دائماً، حتى عند تعذر قراءة ملف التحديث.
+        link.href = apkUrl;
+        link.removeAttribute("aria-disabled");
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
       };
-      fetch(manifestUrl.toString(), {cache:"no-store", headers:{"Accept":"application/json"}})
+
+      // تفعيل روابط الإصدار المعروف فوراً قبل أي طلب شبكة.
+      showApp("father", FALLBACK.father);
+      showApp("child", FALLBACK.child);
+      const status = document.getElementById("status-message");
+
+      const manifestUrl = new URL(MANIFEST_URL);
+      manifestUrl.searchParams.set("ts", String(Date.now()));
+      fetch(manifestUrl.toString(), {
+        method: "GET",
+        cache: "no-store",
+        headers: { "Accept": "application/json" }
+      })
         .then((response) => {
-          if (!response.ok) throw new Error("تعذر جلب ملف التحديث.");
+          if (!response.ok) throw new Error("HTTP " + response.status);
           return response.json();
         })
         .then((data) => {
-          showApp("father", data.father);
-          showApp("child", data.child);
-          const ready = validDownload(data.father && data.father.apk_url) || validDownload(data.child && data.child.apk_url);
-          document.getElementById("status-message").textContent = ready
-            ? "تم تحميل معلومات الإصدارات بنجاح. تأكد من تثبيت التطبيق على الجهاز المناسب."
-            : "لا توجد روابط تنزيل منشورة حالياً.";
+          showApp("father", data && data.father);
+          showApp("child", data && data.child);
+          status.textContent = "تم تحميل معلومات الإصدارات بنجاح. اختر التطبيق المناسب للتنزيل.";
         })
-        .catch(() => {
-          ["father","child"].forEach((key) => {
-            document.getElementById(key + "-version").textContent = "تعذر تحميل الإصدار";
-            document.getElementById(key + "-download").setAttribute("aria-disabled","true");
-          });
-          document.getElementById("status-message").textContent = "تعذر جلب معلومات التحديث الآن. أعد تحميل الصفحة بعد قليل.";
+        .catch((error) => {
+          // لا نعطل الأزرار عند فشل fetch/CORS/الاتصال؛ تُستخدم روابط 1.0.4 المباشرة.
+          showApp("father", FALLBACK.father);
+          showApp("child", FALLBACK.child);
+          status.textContent = "تعذر تحديث معلومات الإصدار حالياً؛ روابط تنزيل الإصدار 1.0.4 تعمل كخطة بديلة.";
+          console.warn("MOREX update manifest unavailable; using built-in APK links.", error);
         });
     })();
   </script>
