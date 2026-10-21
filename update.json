@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "father": {
+    "app": "MOREX Father",
+    "version": "1.0.3",
+    "apk_url": null,
+    "changelog": "لم يُنشر إصدار عام بعد.",
+    "tag": null,
+    "updated_at": null
+  },
+  "child": {
+    "app": "MOREX Child",
+    "version": "1.0.2",
+    "apk_url": null,
+    "changelog": "لم يُنشر إصدار عام بعد.",
+    "tag": null,
+    "updated_at": null
+  }
+}
