@@ -29,9 +29,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify Pages setup credential
+        env:
+          PAGES_SETUP_TOKEN: ${{ secrets.PAGES_SETUP_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${PAGES_SETUP_TOKEN:-}" ]]; then
+            echo "::error::The PAGES_SETUP_TOKEN repository secret is required to enable Pages the first time. It must have Pages: write and Administration: write access to this repository."
+            exit 1
+          fi
+
       - name: Enable and configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
+          token: ${{ secrets.PAGES_SETUP_TOKEN }}
           enablement: true
 
       - name: Prepare static site
