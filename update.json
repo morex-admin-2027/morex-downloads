@@ -10,10 +10,10 @@
   },
   "child": {
     "app": "MOREX Child",
-    "version": "1.0.5",
-    "apk_url": "https://github.com/morex-admin-2027/morex-downloads/releases/download/child-v1.0.5/MOREX-Child-1.0.5.apk",
-    "changelog": "إصدار MOREX الطفل 1.0.5.",
-    "tag": "child-v1.0.5",
-    "updated_at": "2026-10-21T07:51:36Z"
+    "version": "1.0.6",
+    "apk_url": "https://github.com/morex-admin-2027/morex-downloads/releases/download/child-v1.0.6/MOREX-Child-1.0.6.apk",
+    "changelog": "إصدار MOREX الطفل 1.0.6.",
+    "tag": "child-v1.0.6",
+    "updated_at": "2026-10-21T07:59:04Z"
   }
 }
