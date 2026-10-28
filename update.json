@@ -13,9 +13,9 @@
     "app": "MOREX Child",
     "version": "1.3.6",
     "apk_url": "https://github.com/mwqalastdafat53-dot/morex-downloads/releases/download/child-v1.3.6/MOREX-Child-1.3.6.apk",
-    "changelog": "إصدار MOREX الطفل 1.3.6.",
+    "changelog": "إصدار MOREX Child 1.3.6.",
     "tag": "child-v1.3.6",
-    "updated_at": "2026-10-28T12:19:20Z",
-    "sha256": "07d1f07ce528db9207e342efc953414e1ee3adab9049852e892043bad5f8ed21"
+    "updated_at": "2026-10-28T12:19:25Z",
+    "sha256": "4b69d49c93daa1859325c39ec691f9f7adcba429a3837ad20091ffcde83070c3"
   }
 }
