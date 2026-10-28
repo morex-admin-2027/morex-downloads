@@ -2,12 +2,12 @@
   "schema_version": 1,
   "father": {
     "app": "MOREX Father",
-    "version": "1.3.28",
-    "apk_url": "https://github.com/mwqalastdafat53-dot/morex-downloads/releases/download/father-v1.3.28/MOREX-Father-1.3.28.apk",
-    "changelog": "إصدار MOREX Father 1.3.28.",
-    "tag": "father-v1.3.28",
-    "updated_at": "2026-10-28T07:59:44Z",
-    "sha256": "f8f63dd60955ee0f31760aca738a0d20e4418e2d6a0af2b1b7e77755b21a3dc9"
+    "version": "1.3.29",
+    "apk_url": "https://github.com/mwqalastdafat53-dot/morex-downloads/releases/download/father-v1.3.29/MOREX-Father-1.3.29.apk",
+    "changelog": "إصدار MOREX Father 1.3.29.",
+    "tag": "father-v1.3.29",
+    "updated_at": "2026-10-28T08:13:42Z",
+    "sha256": "57975aca979f6b6ddc832c1ad1e22ce30f160959c8717d7afb56d73ce5778d0f"
   },
   "child": {
     "app": "MOREX Child",
